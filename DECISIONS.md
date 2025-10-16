@@ -14,30 +14,27 @@ they can be carried-on or re-visited in the future.
 
 Notes:
 
-Integration source (private) produces a deploymen-candidate package with:
+Integration source (private) produces a deployment-candidate package with:
 
-- source code
-- distribution
-- metadata: (unit test cov, version, ...)
-- config key values or config id: kv better because versioned and cannot be lost
+- source code: monorepo
+- resource code: monorepo: ex: script that produce cloudformation based on configuration.
+- distribution code: monorepo: ex: lamba A code, step function B, static files C
+- metadata and reports: (unit test cov, version, ...)
+- runbook and dashboard generation script
 
 Copy this deployment package to temp S3 bucket (7 days retention, write once at key)
 
-CodeBuild run on deployment-candidate package, verifies it, and add extra metadata and stats (scc, ...)
-Possibly hydrate cdk but do sync ?
-Possibly run some candidate scripts for hydrating stuff
-Add cloudformation to package and order of run.
+CodeBuild run on deployment candidate package, verifies it, and add extra metadata and stats (scc, security check, linting ...)
 Ask for manual approval and sign package ?
-Possibly create a deployment script.
-Generate runbook and dashboard and add to package.
 Create an official deployment package on long term S3 storage (write once)
 but also:
 
-- add runbook, stats, metadata in an artifacts bucket (possibly db but may be overkill)
+- add runbook, stats, metadata in an artifacts bucket (possibly to db but may be overkill)
 
-Now that the deployment-package is ready, it can be deployed
-`sf deploy id`
-It should be possible to: `sf service list`
+Now that the deployment-package is ready, it can be run with a configuration to create a deployment flavour.
+`sf deployWith deploymentId configurationId` to get a service Id.
+
+Configuration should have key-value style tag that allows us to define something like: app:applicationName, version: 123, commitId:commitId, branch:main, flavour:featureA, audience:qa
 
 Lambda code and State Machine Definition in S3.
 
@@ -45,4 +42,3 @@ Resources sync management: AWS resources, files, static web scripts to update th
 
 Deployment is Resources script + configuration + S3 refs (lambda, step functions files).
 
-Configuration should have key-value style tag that allows us to define something like: app:applicationName, version: 123, commitId:commitId, branch:main, flavour:featureA, audience:qa
