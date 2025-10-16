@@ -38,3 +38,11 @@ but also:
 Now that the deployment-package is ready, it can be deployed
 `sf deploy id`
 It should be possible to: `sf service list`
+
+Lambda code and State Machine Definition in S3.
+
+Resources sync management: AWS resources, files, static web scripts to update these on demand.
+
+Deployment is Resources script + configuration + S3 refs (lambda, step functions files).
+
+Configuration should have key-value style tag that allows us to define something like: app:applicationName, version: 123, commitId:commitId, branch:main, flavour:featureA, audience:qa
