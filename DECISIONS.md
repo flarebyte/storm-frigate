@@ -31,6 +31,10 @@ Ask for manual approval and sign package ?
 Possibly create a deployment script.
 Generate runbook and dashboard and add to package.
 Create an official deployment package on long term S3 storage (write once)
+but also:
+
+- add runbook, stats, metadata in an artifacts bucket (possibly db but may be overkill)
 
 Now that the deployment-package is ready, it can be deployed
 `sf deploy id`
+It should be possible to: `sf service list`
